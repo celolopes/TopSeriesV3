@@ -37,8 +37,7 @@ git clone https://github.com/celolopes/TopSeriesV3.git
 - YouTube API
 
 ## Screenshots
-
-[Adicione screenshots do seu app aqui]
+![CleanShot 2025-01-22 at 18 36 03@2x](https://github.com/user-attachments/assets/1400b616-5084-4397-bbf7-f349bbf44424)
 
 ## Licença
 
