@@ -144,7 +144,19 @@ class TVShowViewModel: ObservableObject {
     }
     
     private func fetchTrailer(for showId: Int) async -> String? {
-        // 1. Primeiro tenta buscar vídeos em Português
+        // 1. Primeiro tenta buscar vídeos em inglês
+        if let trailers = await fetchTrailersForLanguage(showId: showId, language: "en-US") {
+            let allVideos = trailers.filter { $0.site == "YouTube" }
+            let videoTypes = ["Trailer", "Teaser", "Clip", "Featurette", "Behind the Scenes"]
+            
+            for videoType in videoTypes {
+                if let video = allVideos.first(where: { $0.type == videoType }) {
+                    return video.key
+                }
+            }
+        }
+        
+        // 2. Se não encontrar em inglês, tenta em português
         if let trailers = await fetchTrailersForLanguage(showId: showId, language: "pt-BR") {
             let allVideos = trailers.filter { $0.site == "YouTube" }
             
@@ -168,18 +180,6 @@ class TVShowViewModel: ObservableObject {
             
             // Por último, tenta qualquer vídeo em português
             let videoTypes = ["Trailer", "Teaser", "Clip", "Featurette", "Behind the Scenes"]
-            for videoType in videoTypes {
-                if let video = allVideos.first(where: { $0.type == videoType }) {
-                    return video.key
-                }
-            }
-        }
-
-        // 2. Se não encontrar em português, tenta em inglês
-        if let trailers = await fetchTrailersForLanguage(showId: showId, language: "en-US") {
-            let allVideos = trailers.filter { $0.site == "YouTube" }
-            let videoTypes = ["Trailer", "Teaser", "Clip", "Featurette", "Behind the Scenes"]
-            
             for videoType in videoTypes {
                 if let video = allVideos.first(where: { $0.type == videoType }) {
                     return video.key
